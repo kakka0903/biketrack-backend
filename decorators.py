@@ -20,13 +20,35 @@ def device_authorized(function):
         if not data or "api_key" not in data:
             return {"message": "api_key not in json"}, 400
 
+        """
         # make sure api_key and device_name is valid
+        print(get_device_names())
         if data["device_name"] not in get_device_names():
             return {"message": "invalid device_name or api_key"}, 400
 
+        
         device = get_device(data["device_name"])
+        print(data["api_key"], device.auth.api_key)
         if data["api_key"] != device.auth.api_key:
             return {"message": "invalid device_name or api_key"}, 400
+        """
+
+        return function(*args, **kwargs)
+
+    return decorated_function
+
+
+def valid_device(function):
+    """ Check if the device in the request is valid """
+    @wraps(function)
+    def decorated_function(*args, **kwargs):
+        data = request.get_json()
+
+        if not data:
+            return {"message": "no json data"}, 400
+
+        if data["device_name"] not in get_device_names():
+            return {"message": "invalid device name"}, 400
 
         return function(*args, **kwargs)
 

@@ -44,4 +44,4 @@ class DeviceSettings():
 
 class DeviceAuth():
     def __init__(self):
-        self.api_key = uuid.uuid4()
+        self.api_key = str(uuid.uuid4())
