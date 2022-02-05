@@ -1,3 +1,4 @@
+import uuid
 
 
 devices = []
@@ -15,8 +16,25 @@ def get_device(name):
 
 class Device():
     def __init__(self, name):
+        self.data = DeviceData(name)
+        self.setting = DeviceSettings()
+        self.auth = DeviceAuth()
+
+
+class DeviceData():
+    def __init__(self, name):
         self.name = name
         self.lat = None
         self.lon = None
         self.battery_voltage = None
         self.battery_percentage = None
+
+
+class DeviceSettings():
+    def __init__(self):
+        self.update_interval = 0
+
+
+class DeviceAuth():
+    def __init__(self):
+        self.api_key = uuid.uuid4()
