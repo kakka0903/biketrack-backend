@@ -20,6 +20,14 @@ class Device():
         self.settings = DeviceSettings()
         self.auth = DeviceAuth()
 
+    def serialize(self):
+        return {
+            "name": self.name,
+            "data": self.data.__dict__,
+            "settings": self.settings.__dict__,
+            "auth": self.auth.__dict__,
+        }
+
 
 class DeviceData():
     def __init__(self):
