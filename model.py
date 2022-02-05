@@ -1,6 +1,5 @@
 import uuid
 
-
 devices = []
 
 
@@ -16,14 +15,14 @@ def get_device(name):
 
 class Device():
     def __init__(self, name):
-        self.data = DeviceData(name)
-        self.setting = DeviceSettings()
+        self.name = name
+        self.data = DeviceData()
+        self.settings = DeviceSettings()
         self.auth = DeviceAuth()
 
 
 class DeviceData():
-    def __init__(self, name):
-        self.name = name
+    def __init__(self):
         self.lat = None
         self.lon = None
         self.battery_voltage = None
