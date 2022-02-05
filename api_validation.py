@@ -15,12 +15,12 @@ def validated(function):
             return {"message": "missing json data"}, 400
 
         # check that device key is present
-        if "device" not in data:
-            return {"message": "missing 'device' key from json data"}, 400
+        if "device_name" not in data:
+            return {"message": "missing 'device_name' key from json data"}, 400
 
         # check that device is valid name
-        if data["device"] not in get_device_names():
-            return {"message": "invalid device"}, 400
+        if data["device_name"] not in get_device_names():
+            return {"message": "invalid device_name"}, 400
 
         return function(*args, **kwargs)
 
