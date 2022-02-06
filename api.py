@@ -25,7 +25,7 @@ def update():
         setattr(device.data, key, data[key])
 
     # return settings to the device
-    return {'message': 'update successful!', "settings": device.settings.__dict__}, 200
+    return {'message': 'update successful!'}, 200
 
 
 @api.route("/latest", methods=['GET', 'POST'])
