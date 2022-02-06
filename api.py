@@ -19,8 +19,6 @@ def update():
         if key not in data:
             return {"message": f"missing '{key}' key"}, 400
 
-    print(data)
-
     # update device object
     device = get_device(data["device_name"])
     device.data.battery_voltage = data["battery_voltage"]
@@ -53,7 +51,6 @@ def change_settings():
     for key in data:
         if key != "device_name":
             setattr(device.settings, key, data[key])
-            print(device.serialize())
 
     return {"message": "success"}, 200
 
