@@ -59,6 +59,6 @@ def create_device():
         data = request.get_json()
         device = Device(data["device_name"])
         devices.append(device)
-        return {"message": "device created successfully!"}, 200
+        return {"message": "device created successfully!", "api_key": device.auth.api_key}, 200
     except KeyError as error:
         return {"message": f"missing key {error}"}, 400
