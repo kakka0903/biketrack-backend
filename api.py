@@ -22,7 +22,8 @@ def update():
     # update device data
     device = get_device(data["device_name"])
     for key in required_keys:
-        setattr(device.data, key, data[key])
+        if key != "device_name":
+            setattr(device.data, key, data[key])
 
     # return settings to the device
     return {'message': 'update successful!'}, 200
