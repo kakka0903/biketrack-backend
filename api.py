@@ -19,13 +19,10 @@ def update():
         if key not in data:
             return {"message": f"missing '{key}' key"}, 400
 
-    # update device object
+    # update device data
     device = get_device(data["device_name"])
-    device.data.battery_voltage = data["battery_voltage"]
-    if data["location_fix"]:
-        device.data.location_type = data["location_type"]
-        device.data.lat = data["lat"]
-        device.data.lon = data["lon"]
+    for key in required_keys:
+        setattr(device.data, key, data[key])
 
     # return settings to the device
     return {'message': 'update successful!', "settings": device.settings.__dict__}, 200
