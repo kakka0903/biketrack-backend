@@ -1,6 +1,7 @@
 from flask import request
 from functools import wraps
 from model import get_device, get_device_names
+import os
 
 
 def device_authorized(function):
@@ -20,12 +21,19 @@ def device_authorized(function):
         if not data or "api_key" not in data:
             return {"message": "api_key not in json"}, 400
 
-        # make sure api_key and device_name is valid
+        # make sure device_name is valid
         if data["device_name"] not in get_device_names():
             return {"message": "invalid device_name or api_key"}, 400
 
+        # check if api_key matches device registered api_key
         device = get_device(data["device_name"])
-        if data["api_key"] != device.auth.api_key:
+        validated = data["api_key"] == device.auth.api_key
+
+        # check if api_key matches universal apikey
+        if not validated and os.environ["UNIVERSAL_API_KEY"]:
+            validated = data["api_key"] == os.environ["UNIVERSAL_API_KEY"]
+
+        if not validated:
             return {"message": "invalid device_name or api_key"}, 400
 
         return function(*args, **kwargs)
@@ -35,7 +43,7 @@ def device_authorized(function):
 
 def valid_device(function):
     """ Check if the device in the request is valid """
-    @wraps(function)
+    @ wraps(function)
     def decorated_function(*args, **kwargs):
         data = request.get_json()
 

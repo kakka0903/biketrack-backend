@@ -1,12 +1,16 @@
+import os
 from api import api
 from flask import Flask
 from flask_cors import CORS
 
 app = Flask(__name__)
+app.register_blueprint(api)
 CORS(app)
 
-# register api blueprint
-app.register_blueprint(api)
+
+if os.environ["UNIVERSAL_API_KEY"]:
+    app.logger.warning("Don't use UNIVERSAL_API_KET in prod")
+    app.logger.warning("Anyone with access to the key can post fake data")
 
 
 @app.get("/")
