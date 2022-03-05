@@ -1,8 +1,10 @@
 from flask import Blueprint, request
 from decorators import device_authorized, valid_device
 from model import devices, get_device, Device
+from flask_cors import CORS
 
 api = Blueprint('api', __name__, url_prefix='/api')
+CORS(api)
 
 
 @api.post("/update")
