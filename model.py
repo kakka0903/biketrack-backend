@@ -1,6 +1,8 @@
+from flask_sqlalchemy import SQLAlchemy
 import uuid
 
 devices = []
+db = SQLAlchemy()
 
 
 def get_device_names():
