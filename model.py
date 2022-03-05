@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy_utils import UUIDType
 import uuid
 
 devices = []
@@ -13,6 +14,28 @@ def get_device(name):
     for device in devices:
         if device.name == name:
             return device
+
+
+class DeviceModel(db.Model):
+    """ Stores information about devices """
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, unique=True, nullable=False)
+    api_key = db.Column(UUIDType, nullable=False, default=uuid.uuid4)
+    data = db.relationship('DeviceDataModel', lazy=True)
+    settings = db.relationship('DeviceSettingsModel', lazy=True)
+
+
+class DeviceDataModel(db.Model):
+    """ Stores data provided by device """
+    lon = db.Column(db.Float)
+    lat = db.Column(db.Float)
+    battery_voltage = db.Column(db.Float)
+    battery_percentage = db.Column(db.Float)
+
+
+class DeviceSettingsModel(db.Model):
+    """ Stores device settings """
+    update_interval = db.Column(db.Integer, nullable=False, default=3600)
 
 
 class Device():
