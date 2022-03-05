@@ -1,5 +1,7 @@
+import click
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_utils import UUIDType
+from flask.cli import with_appcontext
 import uuid
 
 devices = []
@@ -78,3 +80,15 @@ class DeviceSettings():
 class DeviceAuth():
     def __init__(self):
         self.api_key = str(uuid.uuid4())
+
+
+@click.command("init-db")
+@with_appcontext
+def init_db():
+    db.create_all()
+
+
+@click.command("wipe-db")
+@with_appcontext
+def wipe_db():
+    db.drop_all()

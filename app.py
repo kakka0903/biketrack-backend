@@ -10,7 +10,9 @@ def create_app():
     from api import api
     app.register_blueprint(api)
 
-    from model import db
+    from model import db, init_db, wipe_db
     db.init_app(app)
+    app.cli.add_command(init_db)
+    app.cli.add_command(wipe_db)
 
     return app
