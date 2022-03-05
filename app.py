@@ -14,12 +14,4 @@ def create_app():
     app.config.from_pyfile('config.cfg')
     app.config.from_pyfile('config.local.cfg', silent=True)
 
-    try:
-        if os.environ["UNIVERSAL_API_KEY"]:
-            app.logger.warning("Don't use UNIVERSAL_API_KET in prod")
-            app.logger.warning(
-                "Anyone with access to the key can post fake data")
-    except KeyError:
-        pass
-
     return app
