@@ -16,8 +16,3 @@ def create_app():
         pass
 
     return app
-
-
-@app.get("/")
-def hello_world():
-    return "<b><i>Hello world!</i></b>", 200
