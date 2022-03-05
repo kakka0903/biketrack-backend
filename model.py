@@ -27,6 +27,7 @@ class DeviceModel(db.Model):
 
 class DeviceDataModel(db.Model):
     """ Stores data provided by device """
+    id = db.Column(db.Integer, primary_key=True)
     lon = db.Column(db.Float)
     lat = db.Column(db.Float)
     battery_voltage = db.Column(db.Float)
@@ -35,6 +36,7 @@ class DeviceDataModel(db.Model):
 
 class DeviceSettingsModel(db.Model):
     """ Stores device settings """
+    id = db.Column(db.Integer, primary_key=True)
     update_interval = db.Column(db.Integer, nullable=False, default=3600)
 
 
