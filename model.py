@@ -33,11 +33,17 @@ class DeviceDataModel(db.Model):
     battery_voltage = db.Column(db.Float)
     battery_percentage = db.Column(db.Float)
 
+    device_id = db.Column(db.Integer, db.ForeignKey('device_model.id'),
+                          nullable=False)
+
 
 class DeviceSettingsModel(db.Model):
     """ Stores device settings """
     id = db.Column(db.Integer, primary_key=True)
     update_interval = db.Column(db.Integer, nullable=False, default=3600)
+
+    device_id = db.Column(db.Integer, db.ForeignKey('device_model.id'),
+                          nullable=False)
 
 
 class Device():
