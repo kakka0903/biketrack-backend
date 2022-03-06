@@ -36,6 +36,9 @@ class DeviceData(db.Model):
     device_id = db.Column(db.Integer, db.ForeignKey('device.id'),
                           nullable=False)
 
+    def __json__(self):
+        return ['id', 'lon', 'lat', 'battery_voltage', 'battery_percentage']
+
 
 class DeviceSettings(db.Model):
     """ Stores device settings """
@@ -44,6 +47,9 @@ class DeviceSettings(db.Model):
 
     device_id = db.Column(db.Integer, db.ForeignKey('device.id'),
                           nullable=False)
+
+    def __json__(self):
+        return ['update_interval']
 
 
 @click.command("init-db")
