@@ -38,11 +38,11 @@ def update():
 @api.route("/latest", methods=['GET', 'POST'])
 @valid_device
 def latest():
-    """ get the latest info from the appropriate device """
+    """ get the latest data from the appropriate device """
     data = request.get_json()
     device = get_device(data["device_name"])
-
-    return {device.name: device}
+    latest_data = device.data[0]
+    return {device.name: latest_data}
 
 
 @api.post("/change-settings")
