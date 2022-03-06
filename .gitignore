@@ -4,3 +4,4 @@ secrets*
 .vscode
 .venv
 config.local.cfg
+*.db
