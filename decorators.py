@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, current_app
 from functools import wraps
 from model import get_device, get_device_names
 import os
@@ -30,8 +30,8 @@ def device_authorized(function):
         validated = data["api_key"] == device.auth.api_key
 
         # check if api_key matches universal apikey
-        if not validated and os.environ["UNIVERSAL_API_KEY"]:
-            validated = data["api_key"] == os.environ["UNIVERSAL_API_KEY"]
+        if not validated and current_app.config["UNIVERSAL_API_KEY"]:
+            validated = data["api_key"] == current_app.config["UNIVERSAL_API_KEY"]
 
         if not validated:
             return {"message": "invalid device_name or api_key"}, 400
