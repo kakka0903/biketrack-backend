@@ -15,4 +15,7 @@ def create_app():
     app.cli.add_command(init_db)
     app.cli.add_command(wipe_db)
 
+    from json_encoder import AlchemyEncoder
+    app.json_encoder = AlchemyEncoder
+
     return app
