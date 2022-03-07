@@ -48,6 +48,21 @@ def get_device(device):
     return jsonify(device)
 
 
+@api.post("/<device>")
+def new_device(device):
+    """ create a new device """
+    try:
+        device = Device(name=device)
+        DeviceSettings(device=device)
+        db.session.add(device)
+        db.session.commit()
+        return {"message": "device created successfully!", "api_key": device.api_key}, 200
+    except KeyError as error:
+        return {"message": f"missing key {error}"}, 400
+    except exc.IntegrityError:
+        return {"message": "device name is already taken"}, 409
+
+
 @api.post("/<device>/settings")
 @use_device
 def set_settings(device):
@@ -66,19 +81,3 @@ def set_settings(device):
 def get_settings(device):
     """ get a devices settings """
     return jsonify(device.settings)
-
-
-@api.post("/new")
-def new_device():
-    """ create a new device """
-    try:
-        data = request.get_json()
-        device = Device(name=data["device_name"])
-        DeviceSettings(device=device)
-        db.session.add(device)
-        db.session.commit()
-        return {"message": "device created successfully!", "api_key": device.api_key}, 200
-    except KeyError as error:
-        return {"message": f"missing key {error}"}, 400
-    except exc.IntegrityError:
-        return {"message": "device name is already taken"}, 409
