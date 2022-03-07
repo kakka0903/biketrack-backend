@@ -22,7 +22,8 @@ class Device(db.Model):
     name = db.Column(db.String, unique=True, nullable=False)
     api_key = db.Column(UUIDType, nullable=False, default=uuid.uuid4)
     data = db.relationship('DeviceData', backref='device', lazy=True)
-    settings = db.relationship('DeviceSettings', backref='device', lazy=True)
+    settings = db.relationship(
+        'DeviceSettings', backref='device', lazy=True, uselist=False)
 
 
 class DeviceData(db.Model):
