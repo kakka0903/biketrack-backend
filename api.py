@@ -49,6 +49,8 @@ def set_settings(device):
     for key in data:
         setattr(device.settings, key, data[key])
 
+    db.session.commit()
+
     return {"message": "success"}, 200
 
 
