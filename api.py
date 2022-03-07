@@ -1,19 +1,18 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from decorators import device_authorized, valid_device
-from model import DeviceData, get_device, Device, db
+from model import DeviceData, Device, db
 from flask_cors import CORS
 
 api = Blueprint('api', __name__, url_prefix='/api')
 CORS(api)
 
 
-@api.post("/update")
+@api.post("/<device>/update")
 @device_authorized  # make sure device is authorized
 @valid_device  # make sure device is valid (aka registered)
-def update():
+def update(device):
     """ Device updates are posted here """
-    required_keys = ["device_name", "lat", "lon",
-                     "battery_voltage", "battery_percentage"]
+    required_keys = ["lat", "lon", "battery_voltage", "battery_percentage"]
 
     # check that all required keys are present
     data = request.get_json()
@@ -21,8 +20,7 @@ def update():
         if key not in data:
             return {"message": f"missing '{key}' key"}, 400
 
-    # get device and create record
-    device = get_device(data["device_name"])
+    # create a update record
     update_record = DeviceData(device=device)
 
     for key in required_keys:
@@ -35,26 +33,21 @@ def update():
     return {'message': 'update successful!'}, 200
 
 
-@api.route("/latest", methods=['GET', 'POST'])
+@api.route("/<device>/latest", methods=['GET', 'POST'])
 @valid_device
-def latest():
+def latest(device):
     """ get the latest data from the appropriate device """
-    data = request.get_json()
-    device = get_device(data["device_name"])
     latest_data = device.data[0]
-    return {device.name: latest_data}
+    return jsonify(latest_data)
 
 
-@api.post("/change-settings")
+@api.post("/<device>/change-settings")
 @valid_device
-def change_settings():
+def change_settings(device):
     """ get the latest info from the appropriate device """
     data = request.get_json()
-    device = get_device(data["device_name"])
-
     for key in data:
-        if key != "device_name":
-            setattr(device.settings, key, data[key])
+        setattr(device.settings, key, data[key])
 
     return {"message": "success"}, 200
 

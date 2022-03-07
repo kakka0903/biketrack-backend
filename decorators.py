@@ -45,13 +45,12 @@ def valid_device(function):
     """ Check if the device in the request is valid """
     @wraps(function)
     def decorated_function(*args, **kwargs):
-        data = request.get_json()
+        device = get_device(kwargs["device"])
 
-        if not data:
-            return {"message": "no json data"}, 400
-
-        if not get_device(data["device_name"]):
+        if not device:
             return {"message": "invalid device name"}, 400
+
+        kwargs["device"] = device
 
         return function(*args, **kwargs)
 
