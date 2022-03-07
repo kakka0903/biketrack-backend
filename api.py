@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from decorators import auth_device, use_device
 from model import DeviceData, Device, DeviceSettings, db
 from flask_cors import CORS
+from sqlalchemy import exc
 
 api = Blueprint('api', __name__, url_prefix='/api')
 CORS(api)
@@ -73,3 +74,5 @@ def create_device():
         return {"message": "device created successfully!", "api_key": device.api_key}, 200
     except KeyError as error:
         return {"message": f"missing key {error}"}, 400
+    except exc.IntegrityError:
+        return {"message": "device name is already taken"}, 409
