@@ -56,7 +56,7 @@ def set_settings(device):
 @use_device
 def get_settings(device):
     """ get a devices settings """
-    return jsonify(device.setting)
+    return jsonify(device.settings)
 
 
 @api.post("/new")
