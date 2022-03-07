@@ -8,7 +8,7 @@ api = Blueprint('api', __name__, url_prefix='/api')
 CORS(api)
 
 
-@api.post("/<device>/update")
+@api.post("/<device>/data")
 @use_device
 @auth_device  # make sure device is authorized
 def update(device):
