@@ -52,7 +52,6 @@ def set_settings(device):
     return {"message": "success"}, 200
 
 
-@api.post("/create-device")
 @api.get("/<device>/settings")
 @use_device
 def get_settings(device):
@@ -60,6 +59,7 @@ def get_settings(device):
     return jsonify(device.setting)
 
 
+@api.post("/new")
 def create_device():
     """ create a new device """
     try:
