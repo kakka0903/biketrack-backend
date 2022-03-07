@@ -35,7 +35,7 @@ def update(device):
 
 @api.get("/<device>/data/last")
 @use_device
-def latest(device):
+def get_data(device):
     """ get the latest data from device """
     return jsonify(device.data[0])
 
