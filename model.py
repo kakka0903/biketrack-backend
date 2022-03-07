@@ -25,6 +25,9 @@ class Device(db.Model):
     settings = db.relationship(
         'DeviceSettings', backref='device', lazy=True, uselist=False)
 
+    def __json__(self):
+        return ["id", "name", "api_key"]
+
 
 class DeviceData(db.Model):
     """ Stores data provided by device """

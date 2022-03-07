@@ -42,6 +42,12 @@ def latest(device):
     return jsonify(latest_data)
 
 
+@api.get("/<device>")
+@use_device
+def get_device(device):
+    return jsonify(device)
+
+
 @api.post("/<device>/settings")
 @use_device
 def set_settings(device):
