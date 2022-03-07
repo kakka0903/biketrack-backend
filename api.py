@@ -63,6 +63,19 @@ def new_device(device):
         return {"message": "device name is already taken"}, 409
 
 
+@api.delete("/<device>")
+@use_device
+def delete_device(device):
+    """ delete device, device settings and device data """
+    db.session.delete(device.settings)
+    for data in device.data:
+        db.session.delete(data)
+    db.session.delete(device)
+    db.session.commit()
+
+    return {"message": "device and related records deleted successfully"}, 200
+
+
 @api.post("/<device>/settings")
 @use_device
 def set_settings(device):
