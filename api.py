@@ -8,6 +8,50 @@ api = Blueprint('api', __name__, url_prefix='/api')
 CORS(api)
 
 
+@api.get("/<device>")
+@use_device
+def get_device(device):
+    return jsonify(device)
+
+
+@api.post("/<device>")
+def new_device(device):
+    """ create a new device """
+    try:
+        device = Device(name=device)
+        DeviceSettings(device=device)
+        db.session.add(device)
+        db.session.commit()
+        return {"message": "device created successfully!", "api_key": device.api_key}, 200
+    except KeyError as error:
+        return {"message": f"missing key {error}"}, 400
+    except exc.IntegrityError:
+        return {"message": "device name is already taken"}, 409
+
+
+@api.delete("/<device>")
+@use_device
+def delete_device(device):
+    """ delete device, device settings and device data """
+    db.session.delete(device.settings)
+    for data in device.data:
+        db.session.delete(data)
+    db.session.delete(device)
+    db.session.commit()
+
+    return {"message": "device and related records deleted successfully"}, 200
+
+
+@api.get("/<device>/data")
+@use_device
+def get_latest_data(device):
+    """ get the latest data from device """
+    if not device.data:
+        return {"message": "no device data"}, 404
+
+    return jsonify(device.data)
+
+
 @api.post("/<device>/data")
 @use_device
 @auth_device  # make sure device is authorized
@@ -43,48 +87,11 @@ def get_data(device):
         return {"message": "no device data"}, 404
 
 
-@api.get("/<device>/data")
+@api.get("/<device>/settings")
 @use_device
-def get_latest_data(device):
-    """ get the latest data from device """
-    if not device.data:
-        return {"message": "no device data"}, 404
-
-    return jsonify(device.data)
-
-
-@api.get("/<device>")
-@use_device
-def get_device(device):
-    return jsonify(device)
-
-
-@api.post("/<device>")
-def new_device(device):
-    """ create a new device """
-    try:
-        device = Device(name=device)
-        DeviceSettings(device=device)
-        db.session.add(device)
-        db.session.commit()
-        return {"message": "device created successfully!", "api_key": device.api_key}, 200
-    except KeyError as error:
-        return {"message": f"missing key {error}"}, 400
-    except exc.IntegrityError:
-        return {"message": "device name is already taken"}, 409
-
-
-@api.delete("/<device>")
-@use_device
-def delete_device(device):
-    """ delete device, device settings and device data """
-    db.session.delete(device.settings)
-    for data in device.data:
-        db.session.delete(data)
-    db.session.delete(device)
-    db.session.commit()
-
-    return {"message": "device and related records deleted successfully"}, 200
+def get_settings(device):
+    """ get a devices settings """
+    return jsonify(device.settings)
 
 
 @api.post("/<device>/settings")
@@ -98,10 +105,3 @@ def set_settings(device):
     db.session.commit()
 
     return {"message": "success"}, 200
-
-
-@api.get("/<device>/settings")
-@use_device
-def get_settings(device):
-    """ get a devices settings """
-    return jsonify(device.settings)
