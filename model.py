@@ -41,7 +41,7 @@ class DeviceData(db.Model):
     lat = db.Column(db.Float)
     battery_voltage = db.Column(db.Float)
     battery_percentage = db.Column(db.Float)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow())
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
     device_id = db.Column(db.Integer, db.ForeignKey('device.id'),
                           nullable=False)
