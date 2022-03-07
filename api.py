@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from decorators import auth_device, use_device
-from model import DeviceData, Device, db
+from model import DeviceData, Device, DeviceSettings, db
 from flask_cors import CORS
 
 api = Blueprint('api', __name__, url_prefix='/api')
@@ -67,6 +67,7 @@ def create_device():
     try:
         data = request.get_json()
         device = Device(name=data["device_name"])
+        DeviceSettings(device=device)
         db.session.add(device)
         db.session.commit()
         return {"message": "device created successfully!", "api_key": device.api_key}, 200
