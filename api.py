@@ -41,10 +41,10 @@ def latest(device):
     return jsonify(latest_data)
 
 
-@api.post("/<device>/change-settings")
+@api.post("/<device>/settings")
 @use_device
-def change_settings(device):
-    """ get the latest info from the appropriate device """
+def set_settings(device):
+    """ update a devices settings """
     data = request.get_json()
     for key in data:
         setattr(device.settings, key, data[key])
