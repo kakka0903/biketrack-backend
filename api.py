@@ -40,6 +40,16 @@ def latest(device):
     return jsonify(device.data[0])
 
 
+@api.get("/<device>/data")
+@use_device
+def get_latest_data(device):
+    """ get the latest data from device """
+    if not device.data:
+        return {"message": "no device data"}, 404
+
+    return jsonify(device.data)
+
+
 @api.get("/<device>")
 @use_device
 def get_device(device):
