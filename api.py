@@ -37,7 +37,10 @@ def update(device):
 @use_device
 def get_data(device):
     """ get the latest data from device """
-    return jsonify(device.data[0])
+    try:
+        return jsonify(device.data[0])
+    except IndexError:
+        return {"message": "no device data"}, 404
 
 
 @api.get("/<device>/data")
