@@ -1,3 +1,4 @@
+from datetime import datetime
 import click
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_utils import UUIDType
@@ -36,12 +37,13 @@ class DeviceData(db.Model):
     lat = db.Column(db.Float)
     battery_voltage = db.Column(db.Float)
     battery_percentage = db.Column(db.Float)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow())
 
     device_id = db.Column(db.Integer, db.ForeignKey('device.id'),
                           nullable=False)
 
     def __json__(self):
-        return ['id', 'lon', 'lat', 'battery_voltage', 'battery_percentage']
+        return ['id', 'lon', 'lat', 'battery_voltage', 'battery_percentage', 'timestamp']
 
 
 class DeviceSettings(db.Model):
