@@ -25,8 +25,7 @@ def update(device):
     update_record = DeviceData(device=device)
 
     for key in required_keys:
-        if key != "device_name":
-            setattr(update_record, key, data[key])
+        setattr(update_record, key, data[key])
 
     db.session.commit()
 
