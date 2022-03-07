@@ -21,7 +21,7 @@ def auth_device(function):
 
         # check if api_key matches device registered api_key
         device = kwargs["device"]
-        validated = data["api_key"] == device.api_key
+        validated = data["api_key"] == str(device.api_key)
 
         # check if api_key matches universal apikey
         if not validated and current_app.config["UNIVERSAL_API_KEY"]:
