@@ -17,6 +17,10 @@ def get_device(name):
     return Device.query.filter_by(name='koga-miyata').first()
 
 
+def secs_since_update(device_data):
+    return (datetime.utcnow() - device_data.timestamp).seconds
+
+
 class Device(db.Model):
     """ Stores information about devices """
     id = db.Column(db.Integer, primary_key=True)

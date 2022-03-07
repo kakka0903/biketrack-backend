@@ -1,6 +1,6 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, current_app, request, jsonify, json
 from decorators import auth_device, use_device
-from model import DeviceData, Device, DeviceSettings, db
+from model import DeviceData, Device, DeviceSettings, db, secs_since_update
 from flask_cors import CORS
 from sqlalchemy import exc
 
@@ -82,7 +82,10 @@ def update(device):
 def get_data(device):
     """ get the latest data from device """
     try:
-        return jsonify(device.data[0])
+        # TODO: find a non hack to do this
+        data = json.loads(current_app.json_encoder().encode(device.data[-1]))
+        data["secs_since_update"] = secs_since_update(device.data[-1])
+        return data, 200
     except IndexError:
         return {"message": "no device data"}, 404
 
