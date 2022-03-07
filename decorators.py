@@ -3,8 +3,8 @@ from functools import wraps
 from model import get_device
 
 
-def device_authorized(function):
     """ wrapper to reject requests that are not authenticated """
+def auth_device(function):
     @wraps(function)
     def decorated_function(*args, **kwargs):
         data = request.get_json()

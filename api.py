@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from decorators import device_authorized, use_device
+from decorators import auth_device, use_device
 from model import DeviceData, Device, db
 from flask_cors import CORS
 
@@ -8,8 +8,8 @@ CORS(api)
 
 
 @api.post("/<device>/update")
-@device_authorized  # make sure device is authorized
 @use_device
+@auth_device  # make sure device is authorized
 def update(device):
     """ Device updates are posted here """
     required_keys = ["lat", "lon", "battery_voltage", "battery_percentage"]
