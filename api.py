@@ -34,12 +34,11 @@ def update(device):
     return {'message': 'update successful!'}, 200
 
 
-@api.get("/<device>/latest")
+@api.get("/<device>/data/last")
 @use_device
 def latest(device):
-    """ get the latest data from the appropriate device """
-    latest_data = device.data[0]
-    return jsonify(latest_data)
+    """ get the latest data from device """
+    return jsonify(device.data[0])
 
 
 @api.get("/<device>")
