@@ -63,7 +63,7 @@ def get_settings(device):
 
 
 @api.post("/new")
-def create_device():
+def new_device():
     """ create a new device """
     try:
         data = request.get_json()
