@@ -33,7 +33,7 @@ def update(device):
     return {'message': 'update successful!'}, 200
 
 
-@api.route("/<device>/latest", methods=['GET', 'POST'])
+@api.get("/<device>/latest")
 @use_device
 def latest(device):
     """ get the latest data from the appropriate device """
