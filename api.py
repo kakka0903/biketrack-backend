@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from decorators import device_authorized, valid_device
+from decorators import device_authorized, use_device
 from model import DeviceData, Device, db
 from flask_cors import CORS
 
@@ -9,7 +9,7 @@ CORS(api)
 
 @api.post("/<device>/update")
 @device_authorized  # make sure device is authorized
-@valid_device  # make sure device is valid (aka registered)
+@use_device
 def update(device):
     """ Device updates are posted here """
     required_keys = ["lat", "lon", "battery_voltage", "battery_percentage"]
@@ -34,7 +34,7 @@ def update(device):
 
 
 @api.route("/<device>/latest", methods=['GET', 'POST'])
-@valid_device
+@use_device
 def latest(device):
     """ get the latest data from the appropriate device """
     latest_data = device.data[0]
@@ -42,7 +42,7 @@ def latest(device):
 
 
 @api.post("/<device>/change-settings")
-@valid_device
+@use_device
 def change_settings(device):
     """ get the latest info from the appropriate device """
     data = request.get_json()

@@ -41,17 +41,13 @@ def device_authorized(function):
     return decorated_function
 
 
-def valid_device(function):
-    """ Check if the device in the request is valid """
+def use_device(function):
+    """ get the device used in the request from the db and pass it to the function """
     @wraps(function)
     def decorated_function(*args, **kwargs):
-        device = get_device(kwargs["device"])
-
-        if not device:
+        kwargs["device"] = get_device(kwargs["device"])
+        if not kwargs["device"]:
             return {"message": "invalid device name"}, 400
-
-        kwargs["device"] = device
-
         return function(*args, **kwargs)
 
     return decorated_function
