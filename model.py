@@ -1,7 +1,8 @@
 from datetime import datetime
+from enum import unique
 import click
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy_utils import UUIDType
+from sqlalchemy_utils import UUIDType, EmailType
 from flask.cli import with_appcontext
 import uuid
 
@@ -29,6 +30,8 @@ class Device(db.Model):
     data = db.relationship('DeviceData', backref='device', lazy=True)
     settings = db.relationship(
         'DeviceSettings', backref='device', lazy=True, uselist=False)
+
+    user_id = db.Column(UUIDType, db.ForeignKey('user.id'), nullable=False)
 
     def __json__(self):
         return ["id", "name", "api_key"]
@@ -60,6 +63,16 @@ class DeviceSettings(db.Model):
 
     def __json__(self):
         return ['update_interval']
+
+
+class User(db.Model):
+    """ Stores user data """
+    uuid = db.Column(UUIDType, primary_key=True, default=uuid.uuid4)
+    username = db.Column(db.String(30), nullable=False, unique=True)
+    email = db.Column(EmailType, nullable=False, unique=True)
+    verified = db.Column(db.Boolean, nullable=False, default=False)
+
+    devices = db.relationship('Device', backref='user', lazy=True)
 
 
 @click.command("init-db")
