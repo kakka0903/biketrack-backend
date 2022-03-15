@@ -23,7 +23,7 @@ def secs_since_update(device_data):
 
 class Device(db.Model):
     """ Stores information about devices """
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(UUIDType, primary_key=True)
     name = db.Column(db.String, unique=True, nullable=False)
     api_key = db.Column(UUIDType, nullable=False, default=uuid.uuid4)
     data = db.relationship('DeviceData', backref='device', lazy=True)
