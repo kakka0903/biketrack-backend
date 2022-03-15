@@ -1,5 +1,4 @@
 from datetime import datetime
-from enum import unique
 import click
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_utils import UUIDType, EmailType
