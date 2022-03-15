@@ -66,7 +66,7 @@ class DeviceSettings(db.Model):
 
 class User(db.Model):
     """ Stores user data """
-    uuid = db.Column(UUIDType, primary_key=True, default=uuid.uuid4)
+    id = db.Column(UUIDType, primary_key=True, default=uuid.uuid4)
     username = db.Column(db.String(30), nullable=False, unique=True)
     email = db.Column(EmailType, nullable=False, unique=True)
     verified = db.Column(db.Boolean, nullable=False, default=False)
